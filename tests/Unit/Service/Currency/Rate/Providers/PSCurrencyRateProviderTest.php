@@ -24,4 +24,18 @@ class PSCurrencyRateProviderTest extends BaseUnitTest
         $expected = 3;
         self::assertEquals($expected, $actual);
     }
+
+    public function testCacheResponse()
+    {
+        $client = Mockery::mock(HttpClient::class);
+        $body = '{"rates": {"USD":"2", "EUR":"1", "JPY": "6"}}';
+
+        // Client should get called only one time
+        $client->shouldReceive('get')->once()->andReturn(new Response(200, $body));
+
+        $sut = new PSCurrencyRateProvider($client);
+
+        $sut->calculateRate(Currency::USD, Currency::JPY);
+        $sut->calculateRate(Currency::EUR, Currency::USD);
+    }
 }

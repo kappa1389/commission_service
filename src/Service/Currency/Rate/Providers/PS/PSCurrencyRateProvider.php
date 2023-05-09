@@ -11,7 +11,11 @@ use App\Service\Http\Response;
 
 class PSCurrencyRateProvider implements CurrencyRateProviderInterface
 {
-    public function __construct(protected HttpClient $client)
+    // This is a simple cache in order to avoid multiple calls
+    // to the rate-api in the same session
+    protected Response $cachedResponse;
+
+    public function __construct(private HttpClient $client)
     {
     }
 
@@ -20,9 +24,11 @@ class PSCurrencyRateProvider implements CurrencyRateProviderInterface
      */
     public function calculateRate(Currency $from, Currency $to): float
     {
-        $response = $this->callApi();
+        if (!isset($this->cachedResponse)) {
+            $this->callApi();
+        }
 
-        $body = json_decode($response->body(), true);
+        $body = json_decode($this->cachedResponse->body(), true);
 
         $rates = $body['rates'];
 
@@ -34,7 +40,7 @@ class PSCurrencyRateProvider implements CurrencyRateProviderInterface
     /**
      * @throws RemoteServerException
      */
-    protected function callApi(): Response
+    protected function callApi(): void
     {
         $response = $this->client->get(
             sprintf('%s%s', PSCurrencyRateConfig::BASE_URL, PSCurrencyRateConfig::RATES_URI),
@@ -44,6 +50,6 @@ class PSCurrencyRateProvider implements CurrencyRateProviderInterface
             throw new RemoteServerException($response->message());
         }
 
-        return $response;
+        $this->cachedResponse = $response;
     }
 }
