@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  commission-core:
+    container_name: commission-core
+    build:
+      context: ./docker/core
+      dockerfile: Dockerfile
+    volumes:
+      - './:/var/www'
