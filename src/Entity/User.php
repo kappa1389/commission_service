@@ -19,4 +19,14 @@ class User extends Entity
     {
         return $this->type;
     }
+
+    public function isPrivate(): bool
+    {
+        return $this->type->isPrivate();
+    }
+
+    public function isBusiness(): bool
+    {
+        return $this->type->isBusiness();
+    }
 }

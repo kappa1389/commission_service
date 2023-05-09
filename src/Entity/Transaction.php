@@ -44,6 +44,21 @@ class Transaction extends Entity
         return $this->currency;
     }
 
+    public function isDeposit(): bool
+    {
+        return $this->type->isDeposit();
+    }
+
+    public function isWithdraw(): bool
+    {
+        return $this->type->isWithdraw();
+    }
+
+    public function belongsTo(User $user): bool
+    {
+        return $this->getUser()->getId() === $user->getId();
+    }
+
     public static function of(
         string $date,
         User $user,
