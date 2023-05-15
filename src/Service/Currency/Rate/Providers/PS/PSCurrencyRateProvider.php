@@ -12,7 +12,7 @@ use App\Service\Http\Response;
 class PSCurrencyRateProvider implements CurrencyRateProviderInterface
 {
     // This is a simple cache in order to avoid multiple calls
-    // to the rate-api in the same session
+    // to the rate-api in the same instance
     protected Response $cachedResponse;
 
     public function __construct(private HttpClient $client)

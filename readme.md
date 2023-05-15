@@ -35,10 +35,13 @@ vendor/bin/phpunit
 
 ### Manual test
 Run this command inside core container to manually test the application, you need internet access for this,
-you can modify public/sample.txt file and add transactions for manual test
+you can modify public/sample.csv file and add transactions for manual test
 ```bash
 php public/test.php public/sample.csv
 ```
+
+### How to extend
+- In order to add support for new currencies, you'll need to add the currency to src/Entity/ValueObject/Currency class
 
 ## Technical discussions (Images/Containers)
 This project includes one docker container as follows.
@@ -50,3 +53,4 @@ php:8.1-fpm
 ## Improvements
 - We can use a service container in order to resolve dependencies
 - We can implement specification pattern to make easier queries to repositories
+- we can move list of supported currencies from Currency class into a database to be easier to manage
