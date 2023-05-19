@@ -17,13 +17,15 @@ class PrivateUserWithdrawCalculationStrategyTest extends BaseUnitTest
     {
         $transactionRepo = Mockery::mock(TransactionRepositoryInterface::class);
         $currencyConverter = Mockery::spy(CurrencyConverter::class);
-        $fee = 0.1;
 
+        $fee = 0.1;
+        $freeTransactionsCountPerWeek = 2;
+        $freeTransactionAmountInEuro = 1000;
         $sut = new PrivateUserWithdrawCalculationStrategy(
             $transactionRepo,
             $currencyConverter,
-            2,
-            1000,
+            $freeTransactionsCountPerWeek,
+            $freeTransactionAmountInEuro,
             $fee
         );
 
@@ -60,15 +62,17 @@ class PrivateUserWithdrawCalculationStrategyTest extends BaseUnitTest
 
     public function testShouldChargeWholeTransactionIfFreeTransactionsAmountExceeds()
     {
-        $fee = 0.1;
         $transactionRepo = Mockery::mock(TransactionRepositoryInterface::class);
         $currencyConverter = Mockery::spy(CurrencyConverter::class);
 
+        $fee = 0.1;
+        $freeTransactionsCountPerWeek = 2;
+        $freeTransactionAmountInEuro = 1000;
         $sut = new PrivateUserWithdrawCalculationStrategy(
             $transactionRepo,
             $currencyConverter,
-            2,
-            1000,
+            $freeTransactionsCountPerWeek,
+            $freeTransactionAmountInEuro,
             $fee
         );
 
@@ -100,15 +104,17 @@ class PrivateUserWithdrawCalculationStrategyTest extends BaseUnitTest
 
     public function testShouldNotChargeTransactionIfItMeetsFreeOfChargeConditions()
     {
-        $fee = 0.1;
         $transactionRepo = Mockery::mock(TransactionRepositoryInterface::class);
         $currencyConverter = Mockery::mock(CurrencyConverter::class);
 
+        $fee = 0.1;
+        $freeTransactionsCountPerWeek = 2;
+        $freeTransactionAmountInEuro = 1000;
         $sut = new PrivateUserWithdrawCalculationStrategy(
             $transactionRepo,
             $currencyConverter,
-            2,
-            1000,
+            $freeTransactionsCountPerWeek,
+            $freeTransactionAmountInEuro,
             $fee
         );
 
@@ -149,16 +155,18 @@ class PrivateUserWithdrawCalculationStrategyTest extends BaseUnitTest
 
     public function testShouldOnlyChargePartOfTransactionAmountThatIsNotFreeOfCharge()
     {
-        $fee = 0.1;
         $freeTransactionAmount = 1000;
         $transactionRepo = Mockery::mock(TransactionRepositoryInterface::class);
         $currencyConverter = Mockery::mock(CurrencyConverter::class);
 
+        $fee = 0.1;
+        $freeTransactionsCountPerWeek = 2;
+        $freeTransactionAmountInEuro = 1000;
         $sut = new PrivateUserWithdrawCalculationStrategy(
             $transactionRepo,
             $currencyConverter,
-            2,
-            $freeTransactionAmount,
+            $freeTransactionsCountPerWeek,
+            $freeTransactionAmountInEuro,
             $fee
         );
 
@@ -200,16 +208,17 @@ class PrivateUserWithdrawCalculationStrategyTest extends BaseUnitTest
 
     public function testShouldOnlySupportWithdrawTypeForPrivateUser()
     {
-        $fee = 0.1;
-        $freeTransactionAmount = 1000;
         $transactionRepo = Mockery::mock(TransactionRepositoryInterface::class);
         $currencyConverter = Mockery::mock(CurrencyConverter::class);
 
+        $fee = 0.1;
+        $freeTransactionsCountPerWeek = 2;
+        $freeTransactionAmountInEuro = 1000;
         $sut = new PrivateUserWithdrawCalculationStrategy(
             $transactionRepo,
             $currencyConverter,
-            2,
-            $freeTransactionAmount,
+            $freeTransactionsCountPerWeek,
+            $freeTransactionAmountInEuro,
             $fee
         );
 
